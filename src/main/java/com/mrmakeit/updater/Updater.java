@@ -2,23 +2,15 @@ package com.mrmakeit.updater;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.security.DigestInputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
-
-import com.google.gson.Gson;
 
 import cpw.mods.fml.relauncher.FMLInjectionData;
 import cpw.mods.fml.relauncher.IFMLCallHook;
@@ -124,6 +116,7 @@ public class Updater implements IFMLLoadingPlugin, IFMLCallHook
 			return;
 		}else{
 			System.out.println("Current version is out of date or doesn't exist, updating.");
+			System.out.println(path);
 			try {
 				website = new URL(path);
 				Files.copy(website.openStream(), minecraftDir.resolve("mods").resolve(name), StandardCopyOption.REPLACE_EXISTING);
@@ -131,7 +124,7 @@ public class Updater implements IFMLLoadingPlugin, IFMLCallHook
 				System.out.println("Couldn't read from url.  Something in modpack.pak is wrong.");
 				e.printStackTrace();
 			} catch (IOException e) {
-				System.out.println("Couldn't save "+name+".  This means I couldn't write to the mods dir.");
+				System.out.println("Couldn't save "+name+".  This is likely because I can't access the URL.");
 			}
 		}
 	}
