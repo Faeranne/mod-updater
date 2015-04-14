@@ -1,0 +1,12 @@
+.classpath
+.gradle/
+.settings/
+bin/
+build/
+eclipse/
+logs/
+saves/
+options.txt
+usernamecache.json
+.*.swp
+config/
