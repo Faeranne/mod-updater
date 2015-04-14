@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -106,7 +109,7 @@ public class Updater implements IFMLLoadingPlugin, IFMLCallHook
 		FileInputStream fis;
 		String md5 = "";
 		try {
-			fis = new FileInputStream(minecraftDir.resolve("mods").resolve(name).toFile());
+			fis = new FileInputStream(minecraftDir.resolve("mods").resolve(name.replace(' ', '-')).toFile());
 			md5 = org.apache.commons.codec.digest.DigestUtils.md5Hex(fis);
 			fis.close();
 		} catch (IOException e1) {
@@ -116,15 +119,18 @@ public class Updater implements IFMLLoadingPlugin, IFMLCallHook
 			return;
 		}else{
 			System.out.println("Current version is out of date or doesn't exist, updating.");
-			System.out.println(path);
 			try {
-				website = new URL(path);
+				URL url = new URL(path);
+				website = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef()).toURL();
 				Files.copy(website.openStream(), minecraftDir.resolve("mods").resolve(name), StandardCopyOption.REPLACE_EXISTING);
 			} catch (MalformedURLException e) {
 				System.out.println("Couldn't read from url.  Something in modpack.pak is wrong.");
 				e.printStackTrace();
 			} catch (IOException e) {
 				System.out.println("Couldn't save "+name+".  This is likely because I can't access the URL.");
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}

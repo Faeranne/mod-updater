@@ -10,3 +10,5 @@ options.txt
 usernamecache.json
 .*.swp
 config/
+crash-reports/
+mods/
