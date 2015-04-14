@@ -25,7 +25,7 @@ public class Updater implements IFMLLoadingPlugin, IFMLCallHook
 {
 
 	public static final String mcVersion = "[1.7.10]";
-	public static final String version = "0.1";
+	public static final String version = "0.2";
 	public static Path minecraftDir;
 	
 	public Updater() {
